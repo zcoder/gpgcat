@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+
+GPG_TTY=$(tty)
+export GPG_TTY
+
+while getopts 'cdh' opt; do
+  case "$opt" in
+    c)
+	gpg -c | base64 -w0
+	echo ''
+      ;;
+
+    d)
+	base64 -d | gpg -d
+      ;;
+
+    ?|h)
+      echo "Usage: "
+	echo -e "\t$(basename $0) -c    # for crypt message (input text -> output crypted base64 message text)"
+	echo -e "\t$(basename $0) -d    # for decrypt message (input crypted base64 message text -> output text) "
+      exit 1
+      ;;
+  esac
+done
+
